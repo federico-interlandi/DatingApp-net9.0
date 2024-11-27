@@ -78,10 +78,10 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
         var user = await userRepository.GetUserByUserNameAsync(User.GetUserName());
         if(user ==null) return BadRequest("Could not find user");
 
-        var photo = user.Photos.FirstOrDefault(x=> x.Id == photoId);
+        var photo = user.Photos.Find(x=> x.Id == photoId);
         if(photo == null || photo.IsMain) return BadRequest("Cannot use this as main photo");
 
-        var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
+        var currentMain = user.Photos.Find(x => x.IsMain);
         if(currentMain != null) currentMain.IsMain = false;
         photo.IsMain = true;
 
@@ -95,7 +95,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
         var user = await userRepository.GetUserByUserNameAsync(User.GetUserName());
         if(user == null) return BadRequest("User not found");
 
-        var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+        var photo = user.Photos.Find(x => x.Id == photoId);
 
         if(photo == null || photo.IsMain) return BadRequest("This photo cannot be deleted");
         if(photo.PublicId != null){
